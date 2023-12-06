@@ -1,4 +1,4 @@
-use node_template_runtime::{AccountId, RuntimeGenesisConfig, Signature, WASM_BINARY};
+use node_template_runtime::{AccountId, RuntimeGenesisConfig, Signature};
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
@@ -10,6 +10,8 @@ use sp_runtime::traits::{IdentifyAccount, Verify};
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<RuntimeGenesisConfig>;
+
+const WASM_BINARY_GOSEMBLE: Option<&[u8]> = Some(include_bytes!("../../runtime.wasm"));
 
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
@@ -35,7 +37,7 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 
 pub fn development_config() -> Result<ChainSpec, String> {
 	Ok(ChainSpec::builder(
-		WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?,
+		WASM_BINARY_GOSEMBLE.ok_or_else(|| "Development wasm not available".to_string())?,
 		None,
 	)
 	.with_name("Development")
@@ -60,7 +62,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	Ok(ChainSpec::builder(
-		WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?,
+		WASM_BINARY_GOSEMBLE.ok_or_else(|| "Development wasm not available".to_string())?,
 		None,
 	)
 	.with_name("Local Testnet")
