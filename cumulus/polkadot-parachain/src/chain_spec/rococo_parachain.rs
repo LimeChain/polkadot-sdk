@@ -26,9 +26,13 @@ use sc_chain_spec::ChainType;
 use sp_core::{crypto::UncheckedInto, sr25519};
 
 pub fn rococo_parachain_local_config() -> GenericChainSpec {
+	const WASM_BINARY_GOSEMBLE: Option<&[u8]> = Some(include_bytes!("./runtime.wasm"));
+	let code = WASM_BINARY_GOSEMBLE.ok_or_else(|| "GOSEMBLE DEV wasm not available".to_string());
+
 	GenericChainSpec::builder(
-		rococo_parachain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
-		Extensions { relay_chain: "rococo-local".into(), para_id: 1000 },
+		code.unwrap(),
+		// rococo_parachain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		Extensions { relay_chain: "rococo-local".into(), para_id: 2000 },
 	)
 	.with_name("Rococo Parachain Local")
 	.with_id("local_testnet")
@@ -50,16 +54,20 @@ pub fn rococo_parachain_local_config() -> GenericChainSpec {
 			get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
 			get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
 		],
-		1000.into(),
+		2000.into(),
 	))
 	.build()
 }
 
 pub fn staging_rococo_parachain_local_config() -> GenericChainSpec {
+	const WASM_BINARY_GOSEMBLE: Option<&[u8]> = Some(include_bytes!("./runtime.wasm"));
+	let code = WASM_BINARY_GOSEMBLE.ok_or_else(|| "GOSEMBLE DEV wasm not available".to_string());
+
 	#[allow(deprecated)]
 	GenericChainSpec::builder(
-		rococo_parachain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
-		Extensions { relay_chain: "rococo-local".into(), para_id: 1000 },
+		code.unwrap(),
+		// rococo_parachain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		Extensions { relay_chain: "rococo-local".into(), para_id: 2000 },
 	)
 	.with_name("Staging Rococo Parachain Local")
 	.with_id("staging_testnet")
@@ -75,7 +83,7 @@ pub fn staging_rococo_parachain_local_config() -> GenericChainSpec {
 				.unchecked_into(),
 		],
 		vec![hex!["9ed7705e3c7da027ba0583a22a3212042f7e715d3c168ba14f1424e2bc111d00"].into()],
-		1000.into(),
+		2000.into(),
 	))
 	.build()
 }
