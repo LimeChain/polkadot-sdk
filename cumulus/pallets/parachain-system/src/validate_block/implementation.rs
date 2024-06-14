@@ -118,10 +118,7 @@ where
 	);
 
 	// Create the db
-	let db = match storage_proof.to_memory_db(Some(parent_header.state_root())) {
-		Ok((db, _)) => db,
-		Err(_) => panic!("Compact proof decoding failure."),
-	};
+	let db = storage_proof.to_memory_db();
 
 	sp_std::mem::drop(storage_proof);
 

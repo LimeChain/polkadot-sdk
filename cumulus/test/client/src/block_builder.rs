@@ -165,9 +165,9 @@ impl<'a> BuildParachainBlockData for sc_block_builder::BlockBuilder<'a, Block, C
 
 		let storage_proof = built_block
 			.proof
-			.expect("We enabled proof recording before.")
-			.into_compact_proof::<<Header as HeaderT>::Hashing>(parent_state_root)
-			.expect("Creates the compact proof");
+			.expect("We enabled proof recording before.");
+// 			.into_compact_proof::<<Header as HeaderT>::Hashing>(parent_state_root)
+// 			.expect("Creates the compact proof");
 
 		let (header, extrinsics) = built_block.block.deconstruct();
 		ParachainBlockData::new(header, extrinsics, storage_proof)

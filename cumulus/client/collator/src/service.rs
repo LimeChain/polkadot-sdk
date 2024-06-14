@@ -221,16 +221,16 @@ where
 	) -> Option<(Collation, ParachainBlockData<Block>)> {
 		let (header, extrinsics) = candidate.block.deconstruct();
 
-		let compact_proof = match candidate
-			.proof
-			.into_compact_proof::<HashingFor<Block>>(*parent_header.state_root())
-		{
-			Ok(proof) => proof,
-			Err(e) => {
-				tracing::error!(target: "cumulus-collator", "Failed to compact proof: {:?}", e);
-				return None
-			},
-		};
+// 		let compact_proof = match candidate
+// 			.proof
+// 			.into_compact_proof::<HashingFor<Block>>(*parent_header.state_root())
+// 		{
+// 			Ok(proof) => proof,
+// 			Err(e) => {
+// 				tracing::error!(target: "cumulus-collator", "Failed to compact proof: {:?}", e);
+// 				return None
+// 			},
+// 		};
 
 		// Create the parachain block data for the validators.
 		let collation_info = self
@@ -245,7 +245,7 @@ where
 			.ok()
 			.flatten()?;
 
-		let block_data = ParachainBlockData::<Block>::new(header, extrinsics, compact_proof);
+		let block_data = ParachainBlockData::<Block>::new(header, extrinsics, candidate.proof);
 
 		let pov = polkadot_node_primitives::maybe_compress_pov(PoV {
 			block_data: BlockData(block_data.encode()),
